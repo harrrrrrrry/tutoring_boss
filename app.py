@@ -28,9 +28,9 @@ def render_menu_page():
     return render_template('menu.html')
 
 
-@app.route('/contact')
-def render_contact_page():
-    return render_template('contact.html')
+@app.route('/login', methods=['POST', 'GET'])
+def render_login_page():
+    return render_template('login.html')
 
 
 app.run(host='0.0.0.0', debug=True)
