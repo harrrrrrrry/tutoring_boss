@@ -1,6 +1,8 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 import sqlite3
 from sqlite3 import Error
+DATABASE = "tables_tutoring"
+
 
 app = Flask(__name__)
 
@@ -31,10 +33,33 @@ def render_menu_page():
 @app.route('/login', methods=['POST', 'GET'])
 def render_login_page():
     return render_template('login.html')
+
+
+
 @app.route('/signup', methods=['POST', 'GET'])
 def render_signup_page():
-    if request.method == "post":
-        fname = request.form.get("user_fname")
+    if request.method == "POST":
+        fname = request.form.get("user_fname").title().strip()
+        lname = request.form.get("user_lname").title().strip()
+        email = request.form.get("user_email").lower().strip()
+        password = request.form.get("user_password")
+        password2 = request.form.get("user_password2")
+
+        if password != password2:
+            return redirect("\signup?error=password+do+not+match")
+
+        if len(password) < 8:
+            return redirect("\signup?error=passowrd+to+short+,+atleast+8+required")
+
+        if len(password) > 30:
+            return redirect("\signup?error=password+is+too+long+,+30+characters+max")
+        con = connect_database(DATABASE)
+        query_insert = "INSERT INTO user (fname,lname, email, password ) VALUES(?,?,?,?)"
+        cur = con_cursor()
+        cur.execute(query_insert,(fname ,lname ,email ,password))
+        con.commit()
+        con.close()
+
     return render_template('signup.html')
 
 
