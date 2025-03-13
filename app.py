@@ -3,7 +3,6 @@ import sqlite3
 from sqlite3 import Error
 DATABASE = "tables_tutoring"
 
-
 app = Flask(__name__)
 
 def connect_database(db_file):
@@ -45,6 +44,7 @@ def render_signup_page():
         password = request.form.get("user_password")
         password2 = request.form.get("user_password2")
 
+
         if password != password2:
             return redirect("\signup?error=password+do+not+match")
 
@@ -55,7 +55,7 @@ def render_signup_page():
             return redirect("\signup?error=password+is+too+long+,+30+characters+max")
         con = connect_database(DATABASE)
         query_insert = "INSERT INTO user (fname,lname, email, password ) VALUES(?,?,?,?)"
-        cur = con_cursor()
+        cur = con.cursor()
         cur.execute(query_insert,(fname ,lname ,email ,password))
         con.commit()
         con.close()
