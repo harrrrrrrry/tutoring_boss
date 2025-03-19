@@ -54,7 +54,7 @@ def render_signup_page():
         if len(password) > 30:
             return redirect("\signup?error=password+is+too+long+,+30+characters+max")
         con = connect_database(DATABASE)
-        query_insert = "INSERT INTO user (fname,lname, email, password ) VALUES(?,?,?,?)"
+        query_insert = "INSERT INTO user (first_name,last_name, email, password ) VALUES(?,?,?,?)"
         cur = con.cursor()
         cur.execute(query_insert,(fname ,lname ,email ,password))
         con.commit()
