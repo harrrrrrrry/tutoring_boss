@@ -3,7 +3,7 @@ import sqlite3
 from sqlite3 import Error
 from flask_bcrypt import Bcrypt
 DATABASE = "tables_tutoring"
-
+inc_pass1 = False
 app = Flask(__name__)
 app.secret_key = 'balls'
 Bcrypt = Bcrypt(app)
@@ -39,7 +39,6 @@ def logout():
 @app.route('/login', methods=['POST', 'GET'])
 def render_login():
     if request.method == 'POST':
-        print("hi")
         email = request.form.get('email').strip().lower()
         password = request.form.get('user_password')
         con = connect_database(DATABASE)
@@ -49,7 +48,10 @@ def render_login():
         results = cur.fetchone()
         print(results)
         if password != results[3]:
-            return redirect('/login/message=incorrect+username+or+password')
+            inc_pass1 = True
+            if inc_pass1:
+                print("yolo")
+            return render_template('login.html')
         con.close()
         session['logged_in'] = True
         if session['logged_in'] == True:
