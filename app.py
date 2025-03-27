@@ -22,20 +22,33 @@ def connect_database(db_file):
         print(f'an error is here, from database connection place')
     return
 
+
+
 @app.route('/')
 def render_homepage():
     return render_template('home.html')
 
 
 @app.route('/menu')
-def render_menu_page():
-    return render_template('menu.html')
+def render_menu():
+    con = connect_database(DATABASE)
+    query = "SELECT product_name, description, volume, image, price FROM products"
+    cur = con.cursor()
+    cur.execute(query)
+    products_list = cur.fetchall()
+    print(products_list)
+    con.close()
+    return render_template('menu.html', list_of_coffees=products_list)
+
 
 @app.route('/logout', methods=['POST', 'GET'])
 def logout():
     print("kakaboom")
     session.clear()
     return redirect("/")
+
+
+
 @app.route('/login', methods=['POST', 'GET'])
 def render_login():
     if request.method == 'POST':

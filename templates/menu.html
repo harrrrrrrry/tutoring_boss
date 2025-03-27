@@ -5,5 +5,11 @@ menu
 {% endblock %}
 
 {% block main %}
-
+    {%  for coffee in list_of_coffees %}
+        <div class="product-box">
+            <h3 class = product-box-heading>{{ coffee[0] }} </h3>
+            <p class="product-box-info"> {{ coffee[1] }} </p>
+            <img src="static/images/{{ coffee[3] }}.jpg">
+        </div>
+    {% endfor %}
 {% endblock %}
